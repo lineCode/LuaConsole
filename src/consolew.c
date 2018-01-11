@@ -36,9 +36,11 @@
 
 #include <string.h>
 
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
+// #include "lua.h"
+// #include "lualib.h"
+// #include "lauxlib.h"
+
+// #include "luajit.h"
 
 #include "darr.h"
 
@@ -46,6 +48,80 @@
 #define LUA_CONSOLE_COPYRIGHT	"LuaConsole Copyright MIT (C) 2017 Hydroque\n"
 
 
+#include "consolew.h"
+
+static inline void error_dll_catch(void* option, int line) {
+	if(option == 0)
+		fprintf(stderr, "Failed to open DLL function: line `%d`!\n", line);
+}
+
+static inline void load_dll_lua(const char* type) {
+	#if defined(_WIN32) || defined(_WIN64)
+		HINSTANCE luadll = LoadLibrary(TEXT(type));
+		if(luadll == 0)
+			fprintf(stderr, "Failed to open Lua DLL `%s`!\n", type);
+		lua_createtable		= (_lua_createtable) GetProcAddress(luadll, "lua_createtable");
+		luaL_newstate		= (_luaL_newstate) GetProcAddress(luadll, "luaL_newstate");
+		lua_close			= (_lua_close) GetProcAddress(luadll, "lua_close");
+		lua_setglobal		= (_lua_setglobal) GetProcAddress(luadll, "lua_setglobal");
+		lua_getglobal		= (_lua_getglobal) GetProcAddress(luadll, "lua_getglobal");
+		lua_gettop			= (_lua_gettop) GetProcAddress(luadll, "lua_gettop");
+		lua_settop			= (_lua_settop) GetProcAddress(luadll, "lua_settop");
+		lua_rotate			= (_lua_rotate) GetProcAddress(luadll, "lua_rotate");
+		lua_settable		= (_lua_settable) GetProcAddress(luadll, "lua_settable");
+		lua_setfield		= (_lua_setfield) GetProcAddress(luadll, "lua_setfield");
+		lua_getfield		= (_lua_getfield) GetProcAddress(luadll, "lua_getfield");
+		lua_callk			= (_lua_callk) GetProcAddress(luadll, "lua_callk");
+		lua_pcallk			= (_lua_pcallk) GetProcAddress(luadll, "lua_pcallk");
+		lua_pushinteger		= (_lua_pushinteger) GetProcAddress(luadll, "lua_pushinteger");
+		lua_pushlstring		= (_lua_pushlstring) GetProcAddress(luadll, "lua_pushlstring");
+		lua_pushcclosure	= (_lua_pushcclosure) GetProcAddress(luadll, "lua_pushcclosure");
+		lua_pushboolean		= (_lua_pushboolean) GetProcAddress(luadll, "lua_pushboolean");
+		lua_type			= (_lua_type) GetProcAddress(luadll, "lua_type");
+		lua_tolstring		= (_lua_tolstring) GetProcAddress(luadll, "lua_tolstring");
+		lua_toboolean		= (_lua_toboolean) GetProcAddress(luadll, "lua_toboolean");
+		lua_tonumberx		= (_lua_tonumberx) GetProcAddress(luadll, "lua_tonumberx");
+		lua_topointer		= (_lua_topointer) GetProcAddress(luadll, "lua_topointer");
+		lua_typename		= (_lua_typename) GetProcAddress(luadll, "lua_typename");
+		
+		luaL_openlibs		= (_luaL_openlibs) GetProcAddress(luadll, "luaL_openlibs");
+		
+		luaL_traceback		= (_luaL_traceback) GetProcAddress(luadll, "luaL_traceback");
+		luaL_loadstring		= (_luaL_loadstring) GetProcAddress(luadll, "luaL_loadstring");
+		luaL_loadbufferx		= (_luaL_loadbufferx) GetProcAddress(luadll, "luaL_loadbufferx");
+		luaL_loadfilex		= (_luaL_loadfilex) GetProcAddress(luadll, "luaL_loadfilex");
+		error_dll_catch(lua_createtable, __LINE__);
+		error_dll_catch(luaL_newstate, __LINE__);
+		error_dll_catch(lua_close, __LINE__);
+		error_dll_catch(lua_setglobal, __LINE__);
+		error_dll_catch(lua_getglobal, __LINE__);
+		error_dll_catch(lua_gettop, __LINE__);
+		error_dll_catch(lua_settop, __LINE__);
+		error_dll_catch(lua_rotate, __LINE__);
+		error_dll_catch(lua_settable, __LINE__);
+		error_dll_catch(lua_setfield, __LINE__);
+		error_dll_catch(lua_getfield, __LINE__);
+		error_dll_catch(lua_callk, __LINE__);
+		error_dll_catch(lua_pcallk, __LINE__);
+		error_dll_catch(lua_pushinteger, __LINE__);
+		error_dll_catch(lua_pushlstring, __LINE__);
+		error_dll_catch(lua_pushcclosure, __LINE__);
+		error_dll_catch(lua_pushboolean, __LINE__);
+		error_dll_catch(lua_type, __LINE__);
+		error_dll_catch(lua_tolstring, __LINE__);
+		error_dll_catch(lua_toboolean, __LINE__);
+		error_dll_catch(lua_tonumberx, __LINE__);
+		error_dll_catch(lua_topointer, __LINE__);
+		error_dll_catch(lua_typename, __LINE__);
+		
+		error_dll_catch(luaL_openlibs, __LINE__);
+		
+		error_dll_catch(luaL_traceback, __LINE__);
+		error_dll_catch(luaL_loadstring, __LINE__);
+		error_dll_catch(luaL_loadbufferx, __LINE__);
+		error_dll_catch(luaL_loadfilex, __LINE__);
+	#endif
+}
 
 // usage message
 const char HELP_MESSAGE[] = 
@@ -381,6 +457,8 @@ static inline size_t strcnt(const char* str1, char c) {
 // handles arguments, cwd, loads necessary data, executes lua
 int main(int argc, char* argv[])
 {
+	load_dll_lua("lua51.dll");
+	
 	static int print_version = 0;
 	static int post_exist = 0;
 	static int no_file = 0;

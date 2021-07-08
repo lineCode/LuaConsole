@@ -1,0 +1,5 @@
+!.gitignore 
+
+*.dll
+*.so
+*.so.*

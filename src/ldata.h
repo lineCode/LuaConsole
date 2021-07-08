@@ -20,26 +20,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
+
+
 #pragma once
 
-#if defined(LUA_JIT_51)
-#	include "lua.h"
-#	include "lualib.h"
-#	include "lauxlib.h"
-#	include "luajit.h"
-#	include "luadriver.h"
+#include "lang.h"
 
-#	include "darr.h"
+#include "lua.h"
+#include "luadriver.h"
 
-	int loadjitmodule(lua_State* L);
-	int runcmdopt(lua_State* L, const char* opt);
-	int dojitcmd(lua_State* L, const char* cmd);
-	int dojitopt(lua_State* L, const char* opt);
-	int dobytecode(lua_State* L, char** argv);
-	void print_jit_status(lua_State* L);
 
-	int jitargs(lua_State* L, LC_ARGS ARGS);
 
-#endif // EOF if defined(LUA_JIT_51)
+#define LUA_CONSOLE_COPYRIGHT	"LuaConsole Copyright (C) 2017-2021, Cody Tilkins"
+
+
+#if defined(_WIN32) || defined(_WIN64)
+#	define LUA_BIN_EXT_NAME 		".exe"
+#	define LUA_DLL_SO_NAME 			".dll"
+#else
+#	define LUA_BIN_EXT_NAME 		""
+#	define LUA_DLL_SO_NAME 			".so"
+#endif
+
+
+
+lua_State* L;
+LC_ARGS ARGS;
+LangCache* lang;
+
+
+// usage message
+const char HELP_MESSAGE[];
+
+
+
+#if LUA_VERSION_NUM <= 501
+	void luaL_traceback (lua_State *L, lua_State *L1, const char *msg, int level);
+#endif
+
+
+LC_LD_API int luacon_loaddll(LC_ARGS _ARGS, LangCache* _lang);
 

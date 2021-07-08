@@ -1,0 +1,49 @@
+{
+  "files": [
+    "README.md",
+    "README.espanol.md",
+    "README.german.md",
+    "README.chinese.md",
+    "README.portugues.md",
+    "README.russian.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "tilkinsc",
+      "name": "tilkinsc",
+      "avatar_url": "https://avatars.githubusercontent.com/u/7494772?v=4",
+      "profile": "http://tilkinsc.github.io",
+      "contributions": [
+        "code",
+        "content",
+        "doc"
+      ]
+    },
+    {
+      "login": "DarkWiiPlayer",
+      "name": "DarkWiiPlayer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1252859?v=4",
+      "profile": "http://darkwiiplayer.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "acidicMercury8",
+      "name": "Felix Lewandowski",
+      "avatar_url": "https://avatars.githubusercontent.com/u/24611394?v=4",
+      "profile": "https://github.com/acidicMercury8",
+      "contributions": [
+        "translation"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "LuaConsole",
+  "projectOwner": "tilkinsc",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

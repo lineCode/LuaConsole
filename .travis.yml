@@ -1,26 +1,46 @@
-language: c
 
+language: c
+os: linux
 dist: trusty
-sudo: true
+
+cache:
+  directories:
+    - $HOME/cistore
+
 
 compiler:
   - gcc
 
-braches:
+branches:
   only:
     - master
 
-cache:
-  directories:
-    - $HOME/luajit-2.0
 
-script:
-  - bash travis_dependencies.sh
-  - bash build.sh
+before_script:
+  - chmod +x travis.linux.sh
+  - chmod +x travis.mac.sh
+  - chmod +x build.linux.sh
+  - chmod +x build.mac.sh
+  - chmod +x prereqs.sh
+
+
+jobs:
+  allow_failures:
+  - os: osx
+  include:
+    - stage: build
+      script: ./travis.linux.sh
+      os: linux
+      dist: trusty
+    - stage: build
+      script: ./travis.mac.sh
+      osx_image: xcode12.2
+      os: osx
+
 
 after_success:
-  - echo "Build successful. Testing."
-  - bash travis_test.sh
+  - echo "Build and tests successful."
+
 after_failure:
-  - echo "Build failed."
+  - echo "Build and tests failed."
 

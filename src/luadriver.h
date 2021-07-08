@@ -20,26 +20,62 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
+
+// This is a template for DLLs to be built off, using consolew.h and ldata.h
+
 #pragma once
 
-#if defined(LUA_JIT_51)
-#	include "lua.h"
-#	include "lualib.h"
-#	include "lauxlib.h"
-#	include "luajit.h"
-#	include "luadriver.h"
+#include "lang.h"
+#include "darr.h"
 
-#	include "darr.h"
+typedef struct tag_LC_ARGS {
+	size_t file_count;
+	size_t parameters;
+	char* luaver;
+	char* start;
+	char* run_str;
+	Array* globals;
+	Array* libraries;
+	char** parameters_argv;
+	char** files_index;
+	char** luac_argv;
+	char** jitjcmd;
+	char** jitocmd;
+	char** jitbcmd;
+	int jitjcmd_argc;
+	int jitocmd_argc;
+	int jitbcmd_argc;
+	int luac_argc;
+	int do_luac;
+	int do_help;
+	int do_stdin;
+	int restore_console;
+	int print_version;
+	int post_exist;
+	int no_file;
+	int copyright_squelch;
+	int run_after_libs;
+	int delay_parameters;
+	int no_tuple_parameters;
+	int no_env_var;
+	int no_libraries;
+} LC_ARGS;
 
-	int loadjitmodule(lua_State* L);
-	int runcmdopt(lua_State* L, const char* opt);
-	int dojitcmd(lua_State* L, const char* cmd);
-	int dojitopt(lua_State* L, const char* opt);
-	int dobytecode(lua_State* L, char** argv);
-	void print_jit_status(lua_State* L);
 
-	int jitargs(lua_State* L, LC_ARGS ARGS);
 
-#endif // EOF if defined(LUA_JIT_51)
+#if defined(LC_LD_DLL)
+#	if defined(_WIN32) || defined(_WIN64)
+#		define LC_LD_API __declspec(dllexport)
+#	else
+#		define LC_LD_API extern __attribute__((visibility("default")))
+#	endif
+	
+	LC_LD_API int luacon_loaddll(LC_ARGS _ARGS, LangCache* _lang);
+	
+#else
+#	define LC_LD_API
+	typedef int (*luacon_loaddll)(LC_ARGS, LangCache*);
+	
+#endif
+
 

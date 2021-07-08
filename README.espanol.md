@@ -1,6 +1,6 @@
 # LuaConsole
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 [![License](https://img.shields.io/github/license/tilkinsc/LuaConsole.svg)](https://github.com/tilkinsc/LuaConsole/blob/master/LICENSE) [![Codecov](https://codecov.io/gh/tilkinsc/LuaConsole/coverage.svg?branch=master)](https://codecov.io/gh/tilkinsc/LuaConsole) [![Gitter.im](https://badges.gitter.im/tilkinsc/LuaConsole.png)](https://gitter.im/LuaConsole) [![travis-ci](https://travis-ci.org/tilkinsc/LuaConsole.svg?branch=master)](https://travis-ci.org/tilkinsc/LuaConsole) [![Build status](https://ci.appveyor.com/api/projects/status/3rqh0vn8a0lm8itg?svg=true)](https://ci.appveyor.com/project/Hydroque/luaconsole)
 
@@ -13,31 +13,31 @@
 
 [![Paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=RCR8HT8GDC5XC&item_name=Free+Software&currency_code=USD)
 
-[LuaConsole](https://github.com/tilkinsc/LuaConsole) is a next-gen, Cross-Platform [Lua-5.1.x, LuaJIT-2.0, Lua-5.2.x, Lua-5.3.x, Lua-5.4.x]-supporting CLI made to supersede PUC-Lua and LuaJIT CLI
+[https://github.com/tilkinsc/LuaConsole] una CLI de nueva generación, multiplataforma [Lua-5.1.x, LuaJIT-2.0, Lua-5.2.x, Lua-5.3.x, Lua-5.4.x], creada para reemplazar la CLI de PUC-Lua y LuaJIT
 
-For more information, visit [LuaConsole Github Website](https://tilkinsc.github.io/LuaConsole) and the [LuaConsole Github Wiki](https://github.com/tilkinsc/LuaConsole/wiki)!
+Para obtener más información, visite el [sitio web de LuaConsole Github](https://tilkinsc.github.io/LuaConsole) y el [sitio web de LuaConsole Wiki](https://github.com/tilkinsc/LuaConsole/wiki)!
 
-## Goals
+## Metas
 
-* Be a better CLI application than PUC-Lua/LuaJIT
-* Support everything compatible with PUC-Lua and LuaJIT
-* Prevent messy, obfuscating code
-* Be CLI dependent and independent  
-* Multiplatform - Linux, Windows, Mac (unofficial)
+* Sea una mejor aplicación CLI que PUC-Lua/LuaJIT
+* Soporta todo lo compatible con PUC-Lua y LuaJIT
+* Evite el código confuso y desordenado
+* Ser dependiente e independiente de CLI
+* Multiplataforma: Linux, Windows, Mac (no oficial)
 
-## Building
+## Construyendo
 
-[Windows/Linux Build Instructions](https://github.com/tilkinsc/LuaConsole/wiki/Build-Instructions)  
+[Windows/Unix Build Instructions](https://github.com/tilkinsc/LuaConsole/wiki/Build-Instructions)  
 
-## Using with LuaRocks
+## Usar con LuaRocks
 
 [LuaRocks Support](https://github.com/tilkinsc/LuaConsole/wiki/LuaRocks-Support)  
 
-## Using with LuaDIST
+## Usar con LuaDIST
 
 [LuaDist Support Windows, Linux, MacOS](https://github.com/tilkinsc/LuaConsole/wiki/LuaDist-Support-Windows,-Linux,-MacOS)  
 
-## Testing
+## Pruebas
 
 ### Linux
 
@@ -64,7 +64,7 @@ cat res/testing.lua | luaw -Dtest=5 -n a b c -
 luaw -e "dofile('res/testing.lua')" -Dtest=5 -n a b c
 luaw -e "dofile('testing.lua')" -s res -Dtest=5 -n a b c
 
-# stdin:
+# stdin
 luaw -
 dofile('res/testing.lua')
 <Ctrl + d>
@@ -104,7 +104,7 @@ dofile('res/testing.lua')
 <Enter>
 ```
 
-## Bonus
+## Extra
 
 * [Windows Bonus - Flashy Icons & Registry Enhancements](https://github.com/tilkinsc/LuaConsole/wiki/Windows-Bonus----Flashy-Icons-&-Registry-Enhancements)  
 * [Linux Bonus - Shebangs & Desktop Files](https://github.com/tilkinsc/LuaConsole/wiki/Linux-Bonus---Shebangs-&-Desktop-Files)
@@ -118,9 +118,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://tilkinsc.github.io"><img src="https://avatars.githubusercontent.com/u/7494772?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tilkinsc</b></sub></a><br /><a href="https://github.com/tilkinsc/LuaConsole/commits?author=tilkinsc" title="Code">💻</a> <a href="#content-tilkinsc" title="Content">🖋</a> <a href="https://github.com/tilkinsc/LuaConsole/commits?author=tilkinsc" title="Documentation">📖</a></td>
     <td align="center"><a href="http://darkwiiplayer.com"><img src="https://avatars.githubusercontent.com/u/1252859?v=4?s=100" width="100px;" alt=""/><br /><sub><b>DarkWiiPlayer</b></sub></a><br /><a href="https://github.com/tilkinsc/LuaConsole/commits?author=DarkWiiPlayer" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/acidicMercury8"><img src="https://avatars.githubusercontent.com/u/24611394?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Felix Lewandowski</b></sub></a><br /><a href="#translation-acidicMercury8" title="Translation">🌍</a></td>
   </tr>
 </table>
 

@@ -1,18 +1,6 @@
-
-# TODO: Ensure this happens under `directories:` target
-# - need to copy *.dll/so to bin/Debug or bin/Release
-# - need to copy res/* to bin/Debug/res or bin/Release/res
-# - need to copy root/* to bin/Debug or bin/Release
-# - target-specific tools are utilized
-# - removed embedded lua -l's
-
-# TODO: Improvements
-# - improve the environment setup system
-# - obviously support external lua directories/ -D's
-
 # MIT License
 # 
-# Copyright (c) 2017-2018 Cody Tilkins
+# Copyright (c) 2017-2021 Cody Tilkins
 # 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -32,87 +20,88 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-ifeq ($(PLAT), )
-	$(error Please define PLAT= `Windows`, `Unix`)
-endif
+debug=0
+debug_coverage=0
+GCC=gcc
+OBJCOPY=objcopy
+AR=ar
+MAKE=make
+GCC_VER=gnu99
 
-# Directory stuff
-CC = gcc
-RM = del
-CP = copy
-MKDIR = mkdir
-RMDIR = rmdir /S /q
+PREFIX=
 
-ODIR = obj
-SDIR = src
-IDIR = include
-LDIR = lib
-DDIR = dll
-BDIR = bin
-RDIR = res
-ROOT = root
+# Set this to different things if needed between lua5.1.x and lua5.2.x and lua5.3.x. luajit has no effect
+LUA_VER=luajit
+luaverdef=
 
-LIBS_DIR = -L. -Lsrc -Llib -Ldll
-INCL_DIR = -I. -Isrc -Iinclude
+PLAT=
+PLATS=Windows MSVS Unix MacOS Linux
 
-DEBUG_BIN_DIR = $(BDIR)\Debug
-RELEASE_BIN_DIR = $(BDIR)\Release
-
-
-# Compiler/Linker setup
-DEBUG = -g2 -O0
-RELEASE = -s -g0 -O2
-
-EXE_SUFFIX = .exe
-BIN_DIR = $(DEBUG_BIN_DIR)
-CFLAGS = $(DEBUG) -Wall $(LIBS_DIR) $(INCL_DIR)
-
-HEADERS = $(wildcard $(SDIR)/*.h)
-LLIBS = $(wildcard $(LDIR)/*.a) $(wildcard $(DDIR)/*.dll) $(wildcard $(DDIR)/*.so)
+FE_Windows=.bat
+FE_MSVS=.msvs.bat
+FE_MSVC=.msvs.bat
+FE_Unix=.sh
+FE_Linux=.sh
+FE_MacOS=.sh
+PRE_Windows=
+PRE_MSVS=
+PRE_MSVC=
+PRE_Unix=./
+PRE_Linux=./
+PRE_MacOS=./
 
 
-LUAW_OBJS = $(addprefix $(SDIR)/, consolew.o jitsupport.o darr.o)
-LUAADD.DLL_OBJS = $(addprefix $(SDIR)/, additions.o)
-LUAADD.SO_OBJS = $(addprefix $(SDIR)/, additions.o)
+# No need to modify below
+none:
+	$(warning Make is a joke)
+	@echo "Please do 'make PLAT=plat' where `plat` is one of these:"
+	@echo "    $(PLATS)"
+	@echo "Use these targets: clean-prereqs prereqs clean-build build"
+	@echo "Set `LUA_VER` to `luajit` or `lua-5.x.x` to change version, default `luajit`"
+	@echo "Set `luaverdef` to change lua build defines (not needed for luajit), default null"
+	@echo "Set `debug` to 1 for debug or 0 for release, default `0`"
+	@echo "Set `PREFIX` to a path to install to. Using target `install` only
+
+help: none
+default: none
+
+.PHONY: PLAT $(PLATS) LUA_VER luaverdef GCC_VER MAKE OBJCOPY AR GCC AR PREFIX \
+		debug debug_coverage PLATS FE_Windows FE_MSVS FE_Unix FE_Linux FE_MacOS \
+		PRE_Unix PRE_Linux PRE_MacOS
 
 
-# Merge all O's into $(ODIR) from $(SDIR)
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $(subst $(SDIR),$(ODIR),$@)
+prereqs:
+	$(warning Make is a joke)
+	$(PRE_$(PLAT))prereqs$(FE_$(PLAT)) download
 
-default: directories $(PLAT)
+driver:
+	$(warning Make is a joke)
+	$(PRE_$(PLAT))build$(FE_$(PLAT)) driver $(LUA_VER)
 
-directories:
-	-$(RMDIR) $(BIN_DIR)
-	-$(MKDIR) $(BIN_DIR)
-	-$(MKDIR) $(BIN_DIR)\$(RDIR)
-	-$(CP) $(RDIR)\* $(BIN_DIR)\$(RDIR)
-	-$(CP) $(ROOT)\* $(BIN_DIR)
-	-$(CP) $(DDIR)\* $(BIN_DIR)
-
-Windows: LIBS = -llua51.dll
-Windows: CFLAGS += -D__USE_MINGW_ANSI_STDIO=1 -DLUA_JIT_51
-Windows: luaw luaadd.dll
-
-Unix: LIBS = -lluajit-5.1 -ldl -lm
-Unix: CFLAGS += -DLUA_JIT_51
-Unix: luaw luaadd.so
-	
-
-luaadd.dll: $(LUAADD.DLL_OBJS)
-	$(CC) -shared $(CFLAGS) -DLUACON_ADDITIONS -o $(BIN_DIR)/$@ $(subst $(SDIR),$(ODIR),$^) $(LIBS) $(LLIBS)
-
-luaadd.so: $(LUAADD.SO_OBJS)
-	$(CC) -shared $(CFLAGS) -Wl,-E -DLUACON_ADDITIONS -o $(BIN_DIR)/$@ $(subst $(SDIR),$(ODIR),$^) $(LIBS) $(LLIBS)
+package:
+	$(warning Make is a joke)
+	$(PRE_$(PLAT))build$(FE_$(PLAT)) package $(LUA_VER)
 
 
-luaw: $(LUAW_OBJS)
-	$(CC) $(CFLAGS) -o $(BIN_DIR)/$@$(EXE_SUFFIX) $(subst $(SDIR),$(ODIR),$^) $(LIBS) $(LLIBS)
+clean-build:
+	$(warning Make is a joke)
+	$(PRE_$(PLAT))build$(FE_$(PLAT)) clean
+
+clean-prereqs:
+	$(warning Make is a joke)
+	$(PRE_$(PLAT))prereqs$(FE_$(PLAT)) clean
 
 
-# many things need added
-.PHONY: clean
+reset-prereqs:
+	$(warning Make is a joke)
+	$(PRE_$(PLAT))prereqs$(FE_$(PLAT)) reset
 
-# clean needs improved
-clean:
-	-$(RM) $(ODIR)/*.o
+
+uninstall:
+	$(warning Make is a joke)
+	$(error This program deletes by manual removal. Please delete it yourself.)
+
+install:
+	$(warning Make is a joke)
+	$($PRE_$(PLAT))build$(FE_$(PLAT)) install $(PREFIX)
+
